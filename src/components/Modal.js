@@ -49,7 +49,7 @@ export default function Modal({ isOpen, setIsOpen, singleTask, modal }) {
 
     if(!title){
       document.getElementById("titleValidation").innerHTML = "Please write something.";
-      document.getElementById("title").className="shadow-sm bg-gray-50 border border-red-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:border-red-600 dark:placeholder-gray-400 dark:focus:ring-red-500 dark:focus:border-red-500 dark:shadow-sm-light"
+      document.getElementById("title").className=`${styles.titleError}`
       return false;
     }
     if(title) {
@@ -59,7 +59,7 @@ export default function Modal({ isOpen, setIsOpen, singleTask, modal }) {
 
     if(body.length < 30){
       document.getElementById("bodyValidation").innerHTML = "Description must be at least 30 digits long.";
-      document.getElementById('body').className="shadow-sm bg-gray-50 border border-red-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:border-red-600 dark:placeholder-gray-400 dark:focus:ring-red-500 dark:focus:border-red-500 dark:shadow-sm-light"
+      document.getElementById('body').className=`${styles.bodyError}`
       return false;
     }
 

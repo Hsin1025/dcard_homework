@@ -82,7 +82,7 @@
   border: 1px solid #eaeaea;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 300px;
+  /* max-width: 300px; */
 }
 
 .card:hover,
@@ -90,6 +90,7 @@
 .card:active {
   color: #0070f3;
   border-color: #0070f3;
+  @apply dark:border-white
 }
 
 .card h2 {
@@ -99,13 +100,27 @@
 
 .card p {
   margin: 0;
-  font-size: 1.25rem;
+  /* font-size: 1.25rem; */
   line-height: 1.5;
 }
 
 .logo {
   height: 1em;
   margin-left: 0.5rem;
+}
+
+.btn {
+  @apply inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none  focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2
+}
+
+.titleError {
+  @apply shadow-sm bg-gray-50 border border-red-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:border-red-600 dark:placeholder-gray-400 ring-1 ring-red-100 dark:focus:ring-red-500 dark:focus:border-red-500 ;
+  outline: none;
+}
+
+.bodyError {
+  @apply shadow-sm bg-gray-50 border border-red-300 text-gray-900 text-sm rounded-lg focus:ring-red-500 focus:border-red-500 block w-full p-2.5 dark:border-red-600 dark:placeholder-gray-400 ring-1 ring-red-100 dark:focus:ring-red-500 dark:focus:border-red-500 ;
+  outline: none;
 }
 
 @media (max-width: 600px) {
