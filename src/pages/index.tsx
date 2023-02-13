@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link.js';
 import Header from '../components/Header.js';
-import Modal from '../components/Modal.js';
+import Modal from '../components/Modal';
 import ClientOnly from '../components/ClientOnly.js';
 import SearchBar from '../components/SearchBar.js';
 import React from 'react';
@@ -85,18 +85,26 @@ export default function Home() {
   const getMoreData = async () => {
     const labels = searchData.labels ? "label:" + searchData.labels : '';
     const query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body
-    const searchResult = await client.query({
-      query: SEARCH_TASK,
-      variables: {
-        query: query,
-        first: data.length ? data.length + 10 : 10
-      }
-    });
-    const repository_issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
-    
-    console.log('data length', data.length)
-    setData(repository_issues_search_result);
+    try{
+      const searchResult = await client.query({
+        query: SEARCH_TASK,
+        variables: {
+          query: query,
+          first: data.length ? data.length + 10 : 10
+        }
+      });
+      const repository_issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
+      console.log('data length', data.length)
+      setData(repository_issues_search_result);
+    }catch(err){
+      console.error(err)
+    }
+    // console.log('data length', data.length)
+    // setData(repository_issues_search_result);
   };
+  // console.log('res', res)
+
+  
 
   const checkIfHasMore = async () => {
     const labels = searchData.labels ? "label:" + searchData.labels : '';
