@@ -14,6 +14,8 @@ Connect To Github Oauth 👉 NextAuth
 
 Connect To Github GraphQL API 👉 Apollo Client
 
+Deploy 👉 Vercel
+
 ## Other package use
 Infinite Scroll 👉 react-infinite-scroll-component
 
@@ -33,12 +35,26 @@ Dialog(Modal) Design 👉 Headless UI
 入，getSession（來拿到token）也不支援，於是改成全部都用 client-side + React Hook 來做。
 
 ## 參考
--Next Document 
+-[Next Document](https://nextjs.org/docs)
 
 -Stack Overflow
 
 -DEV website
-  
+
+## Flow
+-[Oauth] 先到 github 申請 oauth app，再使用 NextAuth 處理 login, logout，在 `src/_app.tsx` 中用
+
+SessioinProvider 把 app 包住（才可以使用session）， 在將 client 放在 root directory 的
+
+`apollo-client.js`，使用時用 import 即可。
+
+-[GET] 在 `src/index.js`, `src/pages/tasks/[taskSlug].tsx` 和 `src/components/SearchBar` 皆有
+使用 client.query 來拿資料。
+
+-[MUTATION] 在 `src/pages/tasks/[taskSlug].tsx` 用 client.mutation 來刪除特定 task ，在 
+
+`src/components/Modal` 用來更新和創造新 task 。
+
 ## Getting Started
 
 First, run the development server:
