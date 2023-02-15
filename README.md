@@ -23,7 +23,7 @@ Dialog(Modal) Design 👉 Headless UI
 
 ## Component Detail
 
-![Detail Image](/Users/hsinlin/dcard/public/Explanation.svg)
+![Detail Image](/public/Explanation.svg)
 
 ## 困難
 開發遇到最主要的困難：
