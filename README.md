@@ -48,9 +48,9 @@ SessioinProvider 把 app 包住（才可以使用session）， 在將 client 放
 
 `apollo-client.js`，使用時用 import 即可。
 
-- [GET] 在 `src/index.js`, `src/pages/tasks/[taskSlug].tsx` 和 `src/components/SearchBar` 皆有
+- [GET] 在 `src/index.js`, `src/pages/tasks/[taskSlug].tsx` 和 `src/components/SearchBar` 皆有使用
 
-使用 client.query 來拿資料。
+client.query 來拿資料。
 
 - [MUTATION] 在 `src/pages/tasks/[taskSlug].tsx` 用 client.mutation 來刪除特定 task ，在 
 
