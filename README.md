@@ -21,7 +21,9 @@ Infinite Scroll 👉 react-infinite-scroll-component
 
 Dialog(Modal) Design 👉 Headless UI
 
-## Component Detail
+## Component Detail/Structure Tree
+
+![Structure Tree](/public/Tree.svg)
 
 ![Detail Image](/public/Explanation.svg)
 
