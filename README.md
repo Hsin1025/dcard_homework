@@ -1,5 +1,33 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Production 
+https://dcardv2.vercel.app/
+
+簡介影片👇
+https://user-images.githubusercontent.com/116002213/218897784-8b05d3a5-6ac7-4ad0-a32f-825e2ba7508b.mov
+
+## Main Tool use
+React ✖️ Next ✖️ Tailwind
+Connect To Github Oauth 👉 NextAuth
+Connect To Github GraphQL API 👉 Apollo Client
+
+## Other package use
+Infinite Scroll 👉 react-infinite-scroll-component
+Dialog(Modal) Design 👉 Headless UI
+
+## 困難
+開發遇到最主要的困難：
+  -用explorer時，原先是使用query + user + repo 去搜尋資料，做到Search Bar時才發現這樣沒有依內文搜尋的功能，
+要用 query + search 才行，於是整個砍掉重做。
+  -因為Next有 getServerSideProps, getStaticProps, getStaticPaths 的額外功能，原先是用getServerSideProps來
+來資料，用 getStaticProps 和 getStaticPaths 來拿特定task的資料，但是server side 都無法將 useState 的 data傳
+入，getSession（來拿到token）也不支援，於是改成全部都用 client-side + React Hook 來做。
+
+## 參考
+-Next Document 
+-Stack Overflow
+-DEV website
+  
 ## Getting Started
 
 First, run the development server:
