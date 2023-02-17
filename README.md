@@ -2,11 +2,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Introduction
 這是一份 Dcard 出的 frontend intern homework，原先想來拿當練習的題目增進前端的能力，剛開始寫的時候還沒有把握
-
 是否可以完成，在撰寫的過程中需要花很多心力思考，不過我覺得最重要的是 user experience，像是在 update 的部分我
-
 一直希望可以把更新前的資料放在更新的欄位之中，使用者就不需要完全重打內容，但有點可惜一直做不到這點，最後是用 
-
 placeholder 取代。
 
 網址在這～https://dcardv2.vercel.app/
