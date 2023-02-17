@@ -3,49 +3,30 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 ## Production 
 https://dcardv2.vercel.app/
 
-簡介影片👇
+Screen Record👇
 
 https://user-images.githubusercontent.com/116002213/218897784-8b05d3a5-6ac7-4ad0-a32f-825e2ba7508b.mov
 
-## Main Tool use
-React ✖️ Next ✖️ Tailwind
+## ToolBox
+- Framework: 
+  - React: 很常使用useState, useEffect 等等 React Hook
+  - Next: 原本使用SSR，但SSR不支援 useSession，也不能傳入 useState data ，所以最後還是改成client side。
+- Platform: 
+  - Vercel: deploy
+- Package: 
+  - Tailwind: css
+  - NextAuth: getting token, wrap the app inside the sessionProvider
+  - Apollo Client: sending query or mutation request to github graphql explorer api(client is in the `apollo-client.js` file)
+  - Headless UI: Dialog(Modal) Design
+  - Infinite Scroll: used as a component, called fetchMoreData() when more data need to be fetch. 
 
-Connect To Github Oauth 👉 NextAuth
-
-Connect To Github GraphQL API 👉 Apollo Client
-
-Deploy 👉 Vercel
-
-## Other package use
-Infinite Scroll 👉 react-infinite-scroll-component
-
-Dialog(Modal) Design 👉 Headless UI
-
-## Component Detail/Structure Tree
+## Components Detail/Structure
 
 ![Structure Tree](/public/Tree.svg)
 
 ![Detail Image](/public/Explanation.svg)
 
-## 困難
-開發遇到最主要的困難：
 
-  -用explorer時，原先是使用query + user + repo 去搜尋資料，做到Search Bar時才發現這樣沒有依內文搜尋的功能，
-
-要用 query + search 才行，於是整個砍掉重做。
-
-  -因為Next有 getServerSideProps, getStaticProps, getStaticPaths 的額外功能，原先是用getServerSideProps來
-
-來資料，用 getStaticProps 和 getStaticPaths 來拿特定task的資料，但是server side 都無法將 useState 的 data傳
-
-入，getSession（來拿到token）也不支援，於是改成全部都用 client-side + React Hook 來做。
-
-## 參考
--[Next Document](https://nextjs.org/docs)
-
--Stack Overflow
-
--DEV website
 
 ## Flow
 1. [Oauth] 先到 github 申請 oauth app，再使用 NextAuth 處理 login, logout，在 `src/_app.tsx` 中用
