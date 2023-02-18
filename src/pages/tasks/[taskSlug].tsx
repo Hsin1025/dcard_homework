@@ -50,6 +50,7 @@ export default function Task() {
   const { data: session } = useSession();
 
   let [isOpen, setIsOpen] = useState(false);
+  let [hasError, setHasError] = useState(false);
   let [singleTask, setSingleTask] = useState<Task>({
     task: [],
     label: ''
@@ -72,12 +73,18 @@ export default function Task() {
   });
 
   const getTaskSlug = async () => {
-    const taskData = await client.query({
-      query: TASK_SLUG,
-      variables: {
-        number: parseInt(taskSlug)
-      }
-    });
+    try{
+      var taskData = await client.query({
+        query: TASK_SLUG,
+        variables: {
+          number: parseInt(taskSlug)
+        }
+      });
+    }catch(err) {
+      setHasError(true)
+      console.error(err)
+    }
+
     const taskResult = taskData.data.user.repository.issue;
     const labelResult = taskData.data.user.repository.issue.labels.nodes[0];
 
@@ -95,7 +102,7 @@ export default function Task() {
       <Header />
       <main className='w-screen h-screen grid dark:bg-black'>
         {
-          session &&
+          session && !hasError &&
           <>
             <div className='border-gray-500 rounded-md border place-self-center pb-5'>
               <div className='bg-[#24292F] px-52 h-10 rounded-t-md flex self-center'>
@@ -142,6 +149,15 @@ export default function Task() {
                 </button>
                 <Modal isOpen={isOpen} setIsOpen={setIsOpen} singleTask={singleTask} modal={modal}/>
               </div>
+            </div>
+          </>
+        }
+        {
+          hasError &&
+          <>
+            <div className='grid place-content-center'>
+              <p className='text-3xl'>⛔️Sorry! This Task Is No Longer Exist⛔</p><br />
+              <button className='text-3xl' onClick={() => (router.push('/'))}>Go Back 🔙</button>
             </div>
           </>
         }
