@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Link from 'next/link';
 import styles from '../../styles/Home.module.css'
 import { gql } from '@apollo/client';
 import { getApolloClient } from '../../../apollo-client';
@@ -99,7 +100,9 @@ export default function Task() {
   return(
     <div>
       <Head>
-        <title>Task Page</title>
+        <title>Dcard Intern Homework | Detail</title>
+        <meta name="description" content='You can see each detail issue here 每一個issue的詳細資訊 create by Hsin'/>
+        <link rel='Hoya Icon' href='/hoya.ico'></link>
       </Head>
       <Header />
       <main className='w-screen h-screen grid dark:bg-black'>
@@ -159,7 +162,7 @@ export default function Task() {
           <>
             <div className='grid place-content-center'>
               <p className='text-2xl'>⛔️Sorry! This Task Is No Longer Exist⛔</p><br />
-              <a className='text-xl text-center' href='/'>Go Back 🔙</a>
+              <Link className='text-xl text-center' href='/'>Go Back 🔙</Link>
             </div>
           </>
         }

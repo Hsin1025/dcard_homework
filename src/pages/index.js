@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link.js';
 import Header from '../components/Header';
 import Modal from '../components/Modal';
-import ClientOnly from '../components/ClientOnly.js';
+
 import SearchBar from '../components/SearchBar';
 import React from 'react';
 
@@ -114,8 +114,12 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Nextjs | Next-Auth</title>
-        <link rel='icon' href='/favicon.ico'></link>
+        <title>Dcard Intern Homework | 迪卡前端實習作業</title>
+        <meta 
+          name="description" 
+          content="This is a Dcard Frontend Intern Homework written by Hsin, you can update, delete, create any issue in my github repository: dcard_homework 這是一份迪卡前端實習作業，你可以夠過此網站更新、創造、或刪除我 github repo:dcard_homework 之中的 issue 😄" 
+        />
+        <link rel='Hoya Icon' href='/hoya.ico'></link>
       </Head>
       <Header />
       <main className={styles.main}>
