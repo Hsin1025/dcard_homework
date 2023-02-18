@@ -80,9 +80,11 @@ export default function Task() {
           number: parseInt(taskSlug)
         }
       });
+      setHasError(false)
     }catch(err) {
       setHasError(true)
       console.error(err)
+      return 
     }
 
     const taskResult = taskData.data.user.repository.issue;
@@ -156,8 +158,8 @@ export default function Task() {
           hasError &&
           <>
             <div className='grid place-content-center'>
-              <p className='text-3xl'>⛔️Sorry! This Task Is No Longer Exist⛔</p><br />
-              <button className='text-3xl' onClick={() => (router.push('/'))}>Go Back 🔙</button>
+              <p className='text-2xl'>⛔️Sorry! This Task Is No Longer Exist⛔</p><br />
+              <a className='text-xl text-center' href='/'>Go Back 🔙</a>
             </div>
           </>
         }
