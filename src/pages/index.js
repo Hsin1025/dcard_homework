@@ -1,18 +1,17 @@
 import Head from 'next/head';
 import Link from 'next/link.js';
+import Image from 'next/image';
+import React, { useState } from 'react';
 import Header from '../components/Header';
 import Modal from '../components/Modal';
-
 import SearchBar from '../components/SearchBar';
-import React, { useState } from 'react';
+import styles from '../styles/Home.module.css';
+import { getApolloClient } from '../../apollo-client.js';
 
 import InfiniteScroll from 'react-infinite-scroll-component';
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
 import { useSession } from 'next-auth/react';
-
 import { gql } from '@apollo/client';
-import { getApolloClient } from '../../apollo-client.js';
+
 
 const SEARCH_TASK = gql`
 query searchTask($query: String!, $first: Int!) {
@@ -49,14 +48,8 @@ query issueTotalCount($query: String!) {
 }
 `
 export default function Home() {
-  let loading, modal, labels, query, issues_search_result, total_issue_count;
-
+  let loading, client, modal, labels, query, issues_search_result, total_issue_count, getMoreData, checkIfHasMore;
   const { data: session, status } = useSession();
-  loading = status === 'loading';
-
-  const client = getApolloClient();
-
-  modal = 'create';
 
   let [hasMore, setHasMore] = useState(true);
   let [isOpen, setIsOpen] = useState(false);
@@ -66,12 +59,13 @@ export default function Home() {
     body: "",
   });
 
+  loading = status === 'loading';
+  client = getApolloClient();
+  modal = 'create';
   labels = searchData.labels ? "label:" + searchData.labels : '';
   query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body;
 
-  
-
-  const getMoreData = async () => {
+  getMoreData = async () => {
     try{
       var searchResult = await client.query({
         query: SEARCH_TASK,
@@ -85,11 +79,10 @@ export default function Home() {
     };
 
     issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
-    // console.log('data length', data.length)
     setData(issues_search_result);
   };
 
-  const checkIfHasMore = async () => {
+  checkIfHasMore = async () => {
     try {
       var totalIssue = await client.query({
         query: ISSUE_TOTAL_COUNT,
@@ -100,10 +93,9 @@ export default function Home() {
     } catch(err){
       console.error(err)
     }
-    
+
     total_issue_count = totalIssue.data.search.issueCount;
-    // console.log('total', total_issue_count);
-   
+
     if(data.length >= total_issue_count){
       setHasMore(false);
     }else{
