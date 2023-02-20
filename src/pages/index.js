@@ -4,9 +4,8 @@ import Header from '../components/Header';
 import Modal from '../components/Modal';
 
 import SearchBar from '../components/SearchBar';
-import React from 'react';
+import React, { useState } from 'react';
 
-import { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
@@ -50,26 +49,29 @@ query issueTotalCount($query: String!) {
 }
 `
 export default function Home() {
+  let loading, modal, labels, query, issues_search_result, total_issue_count;
+
   const { data: session, status } = useSession();
-  const loading = status === 'loading';
+  loading = status === 'loading';
 
   const client = getApolloClient();
 
-  let modal = 'create';
+  modal = 'create';
+
+  let [hasMore, setHasMore] = useState(true);
   let [isOpen, setIsOpen] = useState(false);
-
   let[data, setData] = useState([]);
-
-  const [searchData, setSearchData] = useState({
+  let [searchData, setSearchData] = useState({
     labels: "",
     body: "",
   });
 
-  const [hasMore, setHasMore] = useState(true);
+  labels = searchData.labels ? "label:" + searchData.labels : '';
+  query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body;
+
+  
 
   const getMoreData = async () => {
-    const labels = searchData.labels ? "label:" + searchData.labels : '';
-    const query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body
     try{
       var searchResult = await client.query({
         query: SEARCH_TASK,
@@ -81,14 +83,13 @@ export default function Home() {
     }catch(err){
       console.error(err)
     };
-    const repository_issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
-    console.log('data length', data.length)
-    setData(repository_issues_search_result);
+
+    issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
+    // console.log('data length', data.length)
+    setData(issues_search_result);
   };
 
   const checkIfHasMore = async () => {
-    const labels = searchData.labels ? "label:" + searchData.labels : '';
-    const query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body
     try {
       var totalIssue = await client.query({
         query: ISSUE_TOTAL_COUNT,
@@ -100,8 +101,8 @@ export default function Home() {
       console.error(err)
     }
     
-    const total_issue_count = totalIssue.data.search.issueCount;
-    console.log('total', total_issue_count);
+    total_issue_count = totalIssue.data.search.issueCount;
+    // console.log('total', total_issue_count);
    
     if(data.length >= total_issue_count){
       setHasMore(false);
@@ -114,10 +115,14 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Dcard Intern Homework | 迪卡前端實習作業</title>
+        <title>Dcard Frontend Intern | 迪卡前端實習</title>
         <meta 
           name="description" 
-          content="This is a Dcard Frontend Intern Homework written by Hsin, you can update, delete, create any issue in my github repository: dcard_homework 這是一份迪卡前端實習作業，你可以夠過此網站更新、創造、或刪除我 github repo:dcard_homework 之中的 issue 😄" 
+          content="This is a Dcard Frontend Intern Project written by Hsin " 
+        />
+        <meta 
+          name="google-site-verification" 
+          content="FaCrpvcmBcrOMLz5JixWjmyRCluQnjlKSWn6R6oaRjY" 
         />
         <link rel='Hoya Icon' href='/hoya.ico'></link>
       </Head>
