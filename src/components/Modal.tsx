@@ -22,74 +22,64 @@ const UPDATE_TASK = gql`
   }
 `;
 
-export default function Modal ({ isOpen, setIsOpen, singleTask, modal }: {
-  isOpen: boolean,
-  setIsOpen: any,
-  singleTask: {
-    task:{
-      body: string;
-      title: string;
-      id: string;
-    }
-    label: {
-      name: string;
-      id: string;
-    }
-  };
-  modal: string,
-})
-{
-  const client = getApolloClient();
+export default function Modal ({ isOpen, setIsOpen, singleTask, modal }){
+  let client, router, reload, title, titleValue, bodyValue, titleForValidation, bodyForValidation, id;
 
-  const router = useRouter();
-
-  const reload = () => {
+  client = getApolloClient();
+  router = useRouter();
+  reload = () => {
     setTimeout(() => {
       router.reload()
     }, 1000)
   };
 
-  const title = modal === 'update' ? 'Update Task' : 'Create Task';
-  const titleValue = modal === 'update' ? singleTask.task.title : '';
-  const bodyValue = modal === 'update' ? singleTask.task.body : '';
+  title = modal === 'update' ? 'Update Task' : 'Create Task';
+  titleValue = modal === 'update' ? singleTask.task.title : '';
+  bodyValue = modal === 'update' ? singleTask.task.body : '';
 
   const [formData, setFormData] = useState({
-    title: modal === 'update' ? singleTask.task.title : '',
-    body: modal === 'update' ? singleTask.task.body : '',
+    title: '',
+    body: '',
     labelIds:'',
   });
 
   function validation (){
-    const title = document.querySelector('#title').value
-    const body = document.querySelector('#body').value
+    titleForValidation = (document.querySelector('#title') as HTMLInputElement).value
+    bodyForValidation = (document.querySelector('#body') as HTMLInputElement).value
+    
+    id = modal === 'update' ? singleTask.label.id : ''
 
-    if(!title){
+    if(!titleForValidation){
       document.getElementById("titleValidation").innerHTML = "Please write something.";
       document.getElementById("title").className=`${styles.titleError}`
       return false;
     }
-    if(title) {
+    if(titleForValidation) {
       document.getElementById("titleValidation").innerHTML = "";
       document.getElementById('title').className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
     }
 
-    if(body.length < 30){
+    if(bodyForValidation.length < 30){
       document.getElementById("bodyValidation").innerHTML = "Description must be at least 30 digits long.";
       document.getElementById('body').className=`${styles.bodyError}`
       return false;
     }
 
     else {
-      client.
-        mutate({
-          mutation: modal === 'update' ? UPDATE_TASK : CREAT_TASK,
-          variables: {
-            title: formData.title,
-            body: formData.body,
-            id: modal === 'update' ? singleTask.task.id : '',
-            labelIds: formData.labelIds
-          }
-        })
+      try{
+        client.
+          mutate({
+            mutation: modal === 'update' ? UPDATE_TASK : CREAT_TASK,
+            variables: {
+              title: formData.title,
+              body: formData.body,
+              id: modal === 'update' ? singleTask.task.id : '',
+              labelIds: formData.labelIds ? formData.labelIds : id
+            }
+          })
+      }catch(err) {
+        console.error(err)
+      }
       setIsOpen(false);
       reload();
     };
@@ -102,7 +92,7 @@ return(
       <Transition.Child
         as={Fragment}
         enter='ease-out duration-300'
-        enterform='opacity-0'
+        enterFrom='opacity-0'
         enterTo='opacity-100'
         leave='ease-in duration-200'
         leaveFrom="opacity-100"
@@ -116,7 +106,7 @@ return(
           <Transition.Child
             as={Fragment}
             enter='ease-out duration-300'
-            enterform='opacity-0'
+            enterFrom='opacity-0'
             enterTo='opacity-100'
             leave='ease-in duration-200'
             leaveFrom="opacity-100"
@@ -129,7 +119,6 @@ return(
                   validation();
                 }}
               >
-              {/* <div> */}
               <div className='flex justify-between'>
                 <Dialog.Title
                   as='h3'
@@ -150,7 +139,7 @@ return(
                       }}
                       className='inline-flex justify-center rounded-md border border-transparent bg-green-100 px-4 py-2 text-sm font-medium text-green-900 hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-green-500 focus-visible:ring-offset-2'
                     >
-                      <option value={singleTask.label.id}>{singleTask.label.name}</option>
+                      <option value=''>{singleTask.label.name}</option>
                       <option value='LA_kwDOI3Dqg88AAAABMQPK7Q'>Open</option>
                       <option value='LA_kwDOI3Dqg88AAAABMQPOkQ'>In Progress</option>
                       <option value='LA_kwDOI3Dqg88AAAABMQPSCA'>Done</option>
