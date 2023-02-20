@@ -48,6 +48,8 @@ query TaskSlug($number: Int!) {
 `
 
 export default function Task() {
+  let client, modal, taskResult, labelResult, router, taskSlug;
+
   const { data: session } = useSession();
 
   let [isOpen, setIsOpen] = useState(false);
@@ -57,11 +59,12 @@ export default function Task() {
     label: ''
   });
 
-  let modal = 'update';
-  const client = getApolloClient();
+  modal = 'update';
+  client = getApolloClient();
 
-  const router = useRouter();
-  const {taskSlug}: any = router.query
+  router = useRouter();
+
+  ({taskSlug} = router.query)
 
   const reRoute = () => {
     setTimeout(() => {
@@ -88,8 +91,8 @@ export default function Task() {
       return 
     }
 
-    const taskResult = taskData.data.user.repository.issue;
-    const labelResult = taskData.data.user.repository.issue.labels.nodes[0];
+    taskResult = taskData.data.user.repository.issue;
+    labelResult = taskData.data.user.repository.issue.labels.nodes[0];
 
     setSingleTask({
       task: taskResult,
@@ -158,10 +161,10 @@ export default function Task() {
           </>
         }
         {
-          hasError &&
+          hasError && session &&
           <>
             <div className='grid place-content-center'>
-              <p className='text-2xl'>⛔️Sorry! This Task Is No Longer Exist⛔</p><br />
+              <p className='text-2xl'>404 Task No Found</p><br />
               <Link className='text-xl text-center' href='/'>Go Back 🔙</Link>
             </div>
           </>
