@@ -1,6 +1,14 @@
-import React from "react";
+import React, { ReactNode, Component } from "react";
 
-class ErrorBoundary extends React.Component<{}, { hasError: boolean }> {
+interface Props {
+  children: ReactNode;
+}
+
+interface State {
+  hasError: boolean;
+}
+
+class ErrorBoundary extends Component<Props, State> {
     constructor(props) {
       super(props)
       this.state = { hasError: false }
