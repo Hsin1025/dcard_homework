@@ -2,7 +2,6 @@ import Head from 'next/head';
 import Link from 'next/link.js';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import Header from '../components/Header';
 import Modal from '../components/Modal';
 import SearchBar from '../components/SearchBar';
 import styles from '../styles/Home.module.css';
@@ -48,24 +47,23 @@ query issueTotalCount($query: String!) {
 }
 `
 export default function Home() {
-  let loading, client, modal, labels, query, issues_search_result, total_issue_count, getMoreData, checkIfHasMore;
   const { data: session, status } = useSession();
+  const loading = status === 'loading';
+  const client = getApolloClient();
 
   let [hasMore, setHasMore] = useState(true);
   let [isOpen, setIsOpen] = useState(false);
-  let[data, setData] = useState([]);
+  let [data, setData] = useState([]);
   let [searchData, setSearchData] = useState({
     labels: "",
     body: "",
   });
+  
+  const modal = 'create';
+  const labels = searchData.labels ? "label:" + searchData.labels : '';
+  const query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body;
 
-  loading = status === 'loading';
-  client = getApolloClient();
-  modal = 'create';
-  labels = searchData.labels ? "label:" + searchData.labels : '';
-  query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body;
-
-  getMoreData = async () => {
+  const getMoreData = async () => {
     try{
       var searchResult = await client.query({
         query: SEARCH_TASK,
@@ -78,11 +76,11 @@ export default function Home() {
       console.error(err)
     };
 
-    issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
+    let issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
     setData(issues_search_result);
   };
 
-  checkIfHasMore = async () => {
+  const checkIfHasMore = async () => {
     try {
       var totalIssue = await client.query({
         query: ISSUE_TOTAL_COUNT,
@@ -94,7 +92,7 @@ export default function Home() {
       console.error(err)
     }
 
-    total_issue_count = totalIssue.data.search.issueCount;
+    const total_issue_count = totalIssue.data.search.issueCount;
 
     if(data.length >= total_issue_count){
       setHasMore(false);
@@ -118,7 +116,6 @@ export default function Home() {
         />
         <link rel='Hoya Icon' href='/hoya.ico'></link>
       </Head>
-      <Header />
       <main className={styles.main}>
         <div>
         {loading && <div>Loading...</div>}
