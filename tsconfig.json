@@ -17,13 +17,15 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     // "jsx": "preserve"
-    "jsx": "react-jsx"
+    "jsx": "preserve"
   },
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
-, "src/pages/api/auth/[...nextauth].js", "src/pages/api/auth/[...nextauth].js"  ],
+    "**/*.tsx",
+    "src/pages/api/auth/[...nextauth].js",
+    "src/pages/api/auth/[...nextauth].js"
+, "src/pages/index.js", "src/pages/index.js", "src/pages/tasks/[taskSlug].tsxx", "src/pages/tasks/[taskSlug].tsxsx", "src/components/SearchBar.js"  ],
   "exclude": [
     "node_modules"
   ]
