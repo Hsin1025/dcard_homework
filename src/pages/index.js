@@ -2,14 +2,13 @@ import Head from 'next/head';
 import Link from 'next/link.js';
 import Image from 'next/image';
 import React, { useState } from 'react';
-import Modal from '../components/Modal';
 import SearchBar from '../components/SearchBar';
 import styles from '../styles/Home.module.css';
 import { getApolloClient } from '../../apollo-client.js';
-
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSession } from 'next-auth/react';
 import { gql } from '@apollo/client';
+import Sentry from '@sentry/nextjs';
 
 
 const SEARCH_TASK = gql`
@@ -52,14 +51,12 @@ export default function Home() {
   const client = getApolloClient();
 
   let [hasMore, setHasMore] = useState(true);
-  let [isOpen, setIsOpen] = useState(false);
   let [data, setData] = useState([]);
   let [searchData, setSearchData] = useState({
     labels: "",
     body: "",
   });
   
-  const modal = 'create';
   const labels = searchData.labels ? "label:" + searchData.labels : '';
   const query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body;
 
@@ -73,7 +70,7 @@ export default function Home() {
         }
       });
     }catch(err){
-      console.error(err)
+      Sentry.captureException(err);
     };
 
     let issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
@@ -89,7 +86,7 @@ export default function Home() {
         }
       });
     } catch(err){
-      console.error(err)
+      Sentry.captureException(err);
     }
 
     const total_issue_count = totalIssue.data.search.issueCount;
@@ -105,10 +102,10 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Dcard Frontend Intern | 迪卡前端實習</title>
+        <title>Dcard Frontend | 迪卡前端</title>
         <meta 
           name="description" 
-          content="This is a Dcard Frontend Intern Project written by Hsin " 
+          content="Hello! This is a Dcard Frontend Intern Homework written by Hsin. It contain usage of React+Next+Tailwindcss, and package like NextAuth, Apollo, Sentry. Feel free to play around!" 
         />
         <meta 
           name="google-site-verification" 
@@ -128,16 +125,6 @@ export default function Home() {
               setData={setData}
               hasMore={checkIfHasMore()}
             />
-            <div className='flex justify-end'>
-              <button 
-                onClick={() => setIsOpen(true)} 
-                className='mt-3 p-2 bg-slate-200 rounded-md dark:bg-transparent dark:border' 
-                type='button'
-              >
-                create issue
-              </button>
-            </div>
-            <Modal isOpen={isOpen} setIsOpen={setIsOpen} modal={modal}/>
             <div>
               <InfiniteScroll
                 dataLength={data.length}

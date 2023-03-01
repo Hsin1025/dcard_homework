@@ -7,8 +7,8 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Modal from '../../components/Modal';
 import Image from 'next/image';
-import Header from '../../components/Header';
 import { useSession } from 'next-auth/react';
+import * as Sentry from "@sentry/nextjs";
 
 interface Task {
   task: any, 
@@ -48,9 +48,9 @@ query TaskSlug($number: Int!) {
 `
 
 export default function Task() {
-  let client, modal, taskResult, labelResult, router, taskSlug;
-
   const { data: session } = useSession();
+  const client = getApolloClient();
+  const router = useRouter();
 
   let [isOpen, setIsOpen] = useState(false);
   let [hasError, setHasError] = useState(false);
@@ -59,12 +59,8 @@ export default function Task() {
     label: ''
   });
 
-  modal = 'update';
-  client = getApolloClient();
-
-  router = useRouter();
-
-  ({taskSlug} = router.query)
+  const modal = 'update';
+  const {taskSlug}: any = router.query;
 
   const reRoute = () => {
     setTimeout(() => {
@@ -86,13 +82,13 @@ export default function Task() {
       });
       setHasError(false)
     }catch(err) {
-      setHasError(true)
-      console.error(err)
-      return 
+      setHasError(true);
+      Sentry.captureException(err);
+      return;
     }
 
-    taskResult = taskData.data.user.repository.issue;
-    labelResult = taskData.data.user.repository.issue.labels.nodes[0];
+    const taskResult = taskData.data.user.repository.issue;
+    const labelResult = taskData.data.user.repository.issue.labels.nodes[0];
 
     setSingleTask({
       task: taskResult,
@@ -107,13 +103,12 @@ export default function Task() {
         <meta name="description" content='You can see each detail issue here 每一個issue的詳細資訊 create by Hsin'/>
         <link rel='Hoya Icon' href='/hoya.ico'></link>
       </Head>
-      <Header />
       <main className='w-screen h-screen grid dark:bg-black'>
         {
           session && !hasError &&
           <>
             <div className='border-gray-500 rounded-md border place-self-center pb-5'>
-              <div className='bg-[#24292F] px-52 h-10 rounded-t-md flex self-center'>
+              <div className='bg-[#24292F] px-52 h-10 rounded-t-md flex place-content-center'>
                 <Image 
                   src='/github_white.svg' 
                   alt='Github Logo' 
@@ -161,11 +156,11 @@ export default function Task() {
           </>
         }
         {
-          hasError && session &&
+          hasError && session && 
           <>
             <div className='grid place-content-center'>
-              <p className='text-2xl'>404 Task No Found</p><br />
-              <Link className='text-xl text-center' href='/'>Go Back 🔙</Link>
+              <p className='text-xl'>Task No Found</p><br />
+              <Link className='text-xl text-center' href='/'>Home</Link>
             </div>
           </>
         }

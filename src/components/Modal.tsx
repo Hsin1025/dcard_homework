@@ -5,6 +5,7 @@ import { Transition } from "@headlessui/react";
 import { getApolloClient } from "../../apollo-client";
 import { useRouter } from "next/router";
 import styles from '../styles/Home.module.css';
+import Sentry from "@sentry/nextjs";
 
 const CREAT_TASK = gql`
   mutation CreatTask($title: String!, $body: String!) {
@@ -23,19 +24,17 @@ const UPDATE_TASK = gql`
 `;
 
 export default function Modal ({ isOpen, setIsOpen, singleTask, modal }){
-  let client, router, reload, title, titleValue, bodyValue, titleForValidation, bodyForValidation, id;
-
-  client = getApolloClient();
-  router = useRouter();
-  reload = () => {
+  const client = getApolloClient();
+  const router = useRouter();
+  const reload = () => {
     setTimeout(() => {
       router.reload()
     }, 1000)
   };
 
-  title = modal === 'update' ? 'Update Task' : 'Create Task';
-  titleValue = modal === 'update' ? singleTask.task.title : '';
-  bodyValue = modal === 'update' ? singleTask.task.body : '';
+  const title = modal === 'update' ? 'Update Task' : 'Create Task';
+  const titleValue = modal === 'update' ? singleTask.task.title : '';
+  const bodyValue = modal === 'update' ? singleTask.task.body : '';
 
   const [formData, setFormData] = useState({
     title: '',
@@ -44,22 +43,22 @@ export default function Modal ({ isOpen, setIsOpen, singleTask, modal }){
   });
 
   function validation (){
-    titleForValidation = (document.querySelector('#title') as HTMLInputElement).value
-    bodyForValidation = (document.querySelector('#body') as HTMLInputElement).value
+    const title = (document.querySelector('#title') as HTMLInputElement).value
+    const body = (document.querySelector('#body') as HTMLInputElement).value
     
-    id = modal === 'update' ? singleTask.label.id : ''
+    const id = modal === 'update' ? singleTask.label.id : ''
 
-    if(!titleForValidation){
+    if(!title){
       document.getElementById("titleValidation").innerHTML = "Please write something.";
       document.getElementById("title").className=`${styles.titleError}`
       return false;
     }
-    if(titleForValidation) {
+    if(title) {
       document.getElementById("titleValidation").innerHTML = "";
       document.getElementById('title').className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
     }
 
-    if(bodyForValidation.length < 30){
+    if(body.length < 30){
       document.getElementById("bodyValidation").innerHTML = "Description must be at least 30 digits long.";
       document.getElementById('body').className=`${styles.bodyError}`
       return false;
@@ -78,7 +77,7 @@ export default function Modal ({ isOpen, setIsOpen, singleTask, modal }){
             }
           })
       }catch(err) {
-        console.error(err)
+        Sentry.captureException(err);
       }
       setIsOpen(false);
       reload();

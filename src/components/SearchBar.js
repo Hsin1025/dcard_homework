@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/router";
 import { gql } from '@apollo/client';
 import Modal from "./Modal";
+import * as Sentry from "@sentry/nextjs";
 
 import { getApolloClient } from "../../apollo-client";
 
@@ -52,7 +53,7 @@ export default function SearchBar({searchData, setSearchData, setData}) {
         }
       });
     }catch(err) {
-      console.error(err)
+      Sentry.captureException(err);
     };
     const issues_search_result = searchResult.data.search.edges.map(edge => edge.node);
     setData(issues_search_result);
