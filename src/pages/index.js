@@ -136,15 +136,13 @@ export default function Home() {
               {data.map((item) => {
                 return(
                   <Link key={item.id} href={`/tasks/${item.number}`}>
-                    {item.labels.edges.map(edge => edge.node).map(label => {
+                    {item.labels.edges.map(edge => edge.node).map((label) => {
                       return (
-                        <>
-                          <div key={label.id} className={styles.card}>
-                            <p className='text-[#6E798C] dark:text-gray-200 text-xl'>label: {label.name}</p>
-                            <p className='text-[#081F32] dark:text-white text-4xl font-serif'>{item.title}</p>
-                            <p className='text-[#374A59] dark:text-gray-100 text-lg truncate...'>{item.body}</p>
-                          </div>
-                        </>
+                        <div key={label.id} className={styles.card}>
+                          <p className='text-[#6E798C] dark:text-gray-200 text-xl'>label: {label.name}</p>
+                          <p className='text-[#081F32] dark:text-white text-4xl font-serif'>{item.title}</p>
+                          <p className='text-[#374A59] dark:text-gray-100 text-lg truncate...'>{item.body}</p>
+                        </div>
                       )
                     })}
                   </Link>
