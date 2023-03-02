@@ -113,7 +113,7 @@ export default function SearchBar({searchData, setSearchData, setData}) {
       <div className='flex justify-end'>
         <button 
           onClick={() => setIsOpen(true)} 
-            className="flex-shrink-0 bg-slate-200 rounded-md px-1 ml-1" 
+            className="flex-shrink-0 bg-slate-200 rounded-md px-1 ml-1 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600" 
             type='button'
           >
             create
