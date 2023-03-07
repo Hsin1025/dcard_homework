@@ -82,9 +82,9 @@ export default function SearchBar({searchData, setSearchData, setData}) {
             labels: e.target.value,
           });
         }} 
-        className="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" 
+        className="z-10 inline-flex items-center py-2.5 lg:px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-l-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600" 
       >
-        <option value=''>State Filter</option>
+        <option value=''>Filter</option>
         <option value="Open">Open</option>
         <option value="InProgress">In Progress</option>
         <option value="Done">Done</option>

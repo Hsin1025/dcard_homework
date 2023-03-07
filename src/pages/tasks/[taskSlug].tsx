@@ -107,7 +107,7 @@ export default function Task() {
         {
           session && !hasError &&
           <>
-            <div className='border-gray-500 rounded-md border place-self-center pb-5'>
+            <div className='border-gray-500 rounded-md border place-self-center pb-5 mx-8 '>
               <div className='bg-[#24292F] px-52 h-10 rounded-t-md flex place-content-center'>
                 <Image 
                   src='/github_white.svg' 
