@@ -29,7 +29,7 @@ export default function Modal ({ isOpen, setIsOpen, singleTask, modal }){
   const reload = () => {
     setTimeout(() => {
       router.reload()
-    }, 1000)
+    }, 1500)
   };
 
   const title = modal === 'update' ? 'Update Task' : 'Create Task';
