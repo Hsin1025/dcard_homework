@@ -1,37 +1,33 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Project
+[網址](https://dcardv2.vercel.app/)
 
-## Introduction
-這是一份 Dcard 的 frontend intern homework，原先想來拿當練習的題目增進自己的能力，剛開始寫的時候原本還沒有把握
-是否可以順利完成，開始寫時才覺得其實也沒有那麼困難（功能的部分），不過想要寫出一個幾乎完美的網頁還是有一定的難度，像
-是原先使用 Next 提供的 SSR（可 SEO optimization），但為了配合 useSession 和傳入 useState，只能改回 Client side。不過在撰寫的過程中學習到很多實用的技巧，花時間寫完這份作業十分值得。
+這是一份迪卡的前端實習作業，大約從寒假開始寫，從選擇工具，到一步步想出解決問題的辦法，最後再修改掉一些警告跟錯誤，
 
-[作業資訊](https://drive.google.com/file/d/1ZlwuUafAQUKBEA_ZK6ShM5F4xLTkV_4X/view)
+讓我收穫到許多以前不會的技巧。我選擇用React + Next + Tailwind css來做，因為在學期間有參與一個開發者社團(GDSC)，
 
-網址-https://dcardv2.vercel.app/
+當時我們有一起寫一個專案就是用Vue + Nuxt + Tailwind css，想說就用類似的架構，tailwind css也已經算熟悉了，不
 
-[warning! 須擁有 github 帳號](https://github.com/signup?ref_cta=Sign+up&ref_loc=header+logged+out&ref_page=%2F&source=header-home)
+過還有登入、取得 token 的部分都是由 NextAuth 來完成，還有接 api 的部分是由 apollo client 來幫忙。
 
-## ToolBox
-- Framework: 
-  - React: 使用useState, useEffect 等等 React Hook
-  - Next: 原本使用SSR，但SSR不支援 useSession，也不能傳入 useState data ，所以最後還是改成client side。
-- Platform: 
-  - Vercel: deploy
-- Package: 
-  - Tailwind: css
-  - NextAuth: getting token, wrap the app inside the sessionProvider
-  - Apollo Client: sending query or mutation request to github graphql explorer api(client is in the `apollo-client.js` file)
-  - Headless UI: Dialog(Modal) Design
-  - Infinite Scroll: used as a component, called fetchMoreData() when more data need to be fetch. 
 
-## SEO
-新增`public/robots.txt`, `public/sitemap.xml`
+## Tool🌱
+- React
+- Next
+- Tailwind
+- NextAuth
+- Apollo Client
+- React-infinite-scroll
+- Eslint
+- Sentry
 
-![search on google](/public/onGoogle.svg)
+## Structure
+![Home Image](/public/Home.svg)
 
-## Components Detail/Structure
+![Detail Image](/public/Detail.svg)
 
-![Detail Image](/public/Explanation.svg)
+![Modal Image](/public/Other.svg)
+
+
 
 
 
