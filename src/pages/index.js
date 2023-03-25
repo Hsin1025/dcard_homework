@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link.js';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import SearchBar from '../components/SearchBar';
 import styles from '../styles/Home.module.css';
 import { getApolloClient } from '../../apollo-client.js';
@@ -61,6 +61,7 @@ export default function Home() {
   const query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body;
 
   const getMoreData = async () => {
+    
     try{
       var searchResult = await client.query({
         query: SEARCH_TASK,
@@ -78,6 +79,7 @@ export default function Home() {
   };
 
   const checkIfHasMore = async () => {
+
     try {
       var totalIssue = await client.query({
         query: ISSUE_TOTAL_COUNT,
@@ -96,8 +98,9 @@ export default function Home() {
     }else{
       setHasMore(true);
     }
-    return hasMore;
   }
+
+  useMemo(() => checkIfHasMore(), [data])
 
   return (
     <div className={styles.container}>
@@ -105,7 +108,7 @@ export default function Home() {
         <title>Dcard Frontend | 迪卡前端</title>
         <meta 
           name="description" 
-          content="Hello! This is a Dcard Frontend Intern Homework written by Hsin. It contain usage of React+Next+Tailwindcss, and package like NextAuth, Apollo, Sentry. Feel free to play around!" 
+          content="Hello! This is a Dcard Frontend Intern Homework written by Hsin." 
         />
         <meta 
           name="google-site-verification" 
@@ -123,7 +126,6 @@ export default function Home() {
               searchData={searchData} 
               setSearchData={setSearchData} 
               setData={setData}
-              hasMore={checkIfHasMore()}
             />
             <div>
               <InfiniteScroll

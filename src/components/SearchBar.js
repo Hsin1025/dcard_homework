@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useMemo, useEffect, useState } from "react"
 import { useRouter } from "next/router";
 import { gql } from '@apollo/client';
 import Modal from "./Modal";
@@ -34,17 +34,17 @@ query search($query: String!) {
 `
 
 export default function SearchBar({searchData, setSearchData, setData}) {
-  const router = useRouter();
+
   const client = getApolloClient();
 
   let [isOpen, setIsOpen] = useState(false);
   const modal = 'create';
 
   const getSearchData = async () => {
+    console.log('hit')
     const labels = searchData.labels ? "label:" + searchData.labels : '';
     const query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body
 
-    console.log('query', query)
     try{
       var searchResult = await client.query({
         query: SEARCH_TASK,
@@ -62,14 +62,13 @@ export default function SearchBar({searchData, setSearchData, setData}) {
   useEffect(() => {
     getSearchData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchData]);
 
   return(
   <form 
     onSubmit={(e) => {
       e.preventDefault();
       getSearchData();
-      router.push(`/?search=${searchData}`)
     }}
   >
     <div className="flex">

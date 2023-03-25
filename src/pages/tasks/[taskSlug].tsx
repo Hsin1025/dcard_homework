@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Link from 'next/link';
 import styles from '../../styles/Home.module.css'
 import { gql } from '@apollo/client';
 import { getApolloClient } from '../../../apollo-client';
@@ -53,7 +52,6 @@ export default function Task() {
   const router = useRouter();
 
   let [isOpen, setIsOpen] = useState(false);
-  let [hasError, setHasError] = useState(false);
   let [singleTask, setSingleTask] = useState<Task>({
     task: [],
     label: ''
@@ -80,9 +78,7 @@ export default function Task() {
           number: parseInt(taskSlug)
         }
       });
-      setHasError(false)
     }catch(err) {
-      setHasError(true);
       Sentry.captureException(err);
       return;
     }
@@ -100,12 +96,12 @@ export default function Task() {
     <div>
       <Head>
         <title>Dcard Intern Homework | Detail</title>
-        <meta name="description" content='You can see each detail issue here 每一個issue的詳細資訊 create by Hsin'/>
+        <meta name="description" content='每一個task的詳細資訊'/>
         <link rel='Hoya Icon' href='/hoya.ico'></link>
       </Head>
       <main className='w-screen h-screen grid dark:bg-black'>
         {
-          session && !hasError &&
+          session &&
           <>
             <div className='border-gray-500 rounded-md border place-self-center pb-5 mx-8 '>
               <div className='bg-[#24292F] px-52 h-10 rounded-t-md flex place-content-center'>
@@ -152,15 +148,6 @@ export default function Task() {
                 </button>
                 <Modal isOpen={isOpen} setIsOpen={setIsOpen} singleTask={singleTask} modal={modal}/>
               </div>
-            </div>
-          </>
-        }
-        {
-          hasError && session && 
-          <>
-            <div className='grid place-content-center'>
-              <p className='text-xl'>Task No Found</p><br />
-              <Link className='text-xl text-center' href='/'>Home</Link>
             </div>
           </>
         }
