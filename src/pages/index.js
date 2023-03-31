@@ -56,46 +56,50 @@ export default function Home() {
     body: "",
   });
   
-  const labels = searchData.labels ? "label:" + searchData.labels : '';
-  const query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body;
+  if(session) {
+    var labels = searchData.labels ? "label:" + searchData.labels : '';
+    var query = "repo:Hsin1025/dcard_homework " + labels + " in:body " + searchData.body;
+  }
 
   const getMoreData = async () => {
-    
-    try{
-      var searchResult = await client.query({
-        query: SEARCH_TASK,
-        variables: {
-          query: query,
-          first: data.length ? data.length + 10 : 10
-        }
-      });
-    }catch(err){
-      console.error(err)
-    };
+    if(session) {
+      try{
+        var searchResult = await client.query({
+          query: SEARCH_TASK,
+          variables: {
+            query: query,
+            first: data.length ? data.length + 10 : 10
+          }
+        });
+      }catch(err){
+        console.error(err)
+      };
 
-    let issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
-    setData(issues_search_result);
+      let issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
+      setData(issues_search_result);
+    }
   };
 
   const checkIfHasMore = async () => {
-
-    try {
-      var totalIssue = await client.query({
-        query: ISSUE_TOTAL_COUNT,
-        variables: {
-          query: query
-        }
-      });
-    } catch(err){
-      console.error(err)
-    }
-
-    const total_issue_count = totalIssue.data.search.issueCount;
-
-    if(data.length >= total_issue_count){
-      setHasMore(false);
-    }else{
-      setHasMore(true);
+    if(session) {
+      try {
+        var totalIssue = await client.query({
+          query: ISSUE_TOTAL_COUNT,
+          variables: {
+            query: query
+          }
+        });
+      } catch(err){
+        console.error(err)
+      }
+  
+      const total_issue_count = totalIssue.data.search.issueCount;
+  
+      if(data.length >= total_issue_count){
+        setHasMore(false);
+      }else{
+        setHasMore(true);
+      }
     }
   }
 
