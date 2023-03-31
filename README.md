@@ -24,6 +24,33 @@
 
 ![Modal Image](/public/Other.svg)
 
+## 另一種infinite scroll
+
+```
+const listRef = useRef();
+
+  useEffect(() => {
+    if(session){
+      window.addEventListener('scroll', onScroll);
+
+      function onScroll() {
+        if(listRef.current) {
+          const { clientHeight } = listRef.current;
+          if(window.scrollY + window.innerHeight > clientHeight) {
+            setHasMore(true)
+          }
+        }
+      };
+    }
+
+  }, [data])
+
+  useEffect(() => {
+    getMoreData(hasMore);
+    setHasMore(false);
+  }, [hasMore])
+```
+
 
 
 
