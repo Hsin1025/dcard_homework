@@ -8,7 +8,6 @@ import { getApolloClient } from '../../apollo-client.js';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { useSession } from 'next-auth/react';
 import { gql } from '@apollo/client';
-import Sentry from '@sentry/nextjs';
 
 
 const SEARCH_TASK = gql`
@@ -71,7 +70,7 @@ export default function Home() {
         }
       });
     }catch(err){
-      Sentry.captureException(err);
+      console.error(err)
     };
 
     let issues_search_result = searchResult.data.search.edges.map(edge => edge.node)
@@ -88,7 +87,7 @@ export default function Home() {
         }
       });
     } catch(err){
-      Sentry.captureException(err);
+      console.error(err)
     }
 
     const total_issue_count = totalIssue.data.search.issueCount;
